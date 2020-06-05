@@ -15,17 +15,31 @@
 
 //! "use" unlike "C++ include" is by default very picky. As an example
 //! pulling a type to your program is not equal to pulling all the
-//! interfaces that such a type implements.
+//! interfaces that such a type implements. The other example shows
+//! pulling a type to your program would not pull the type of its members
+//! automatically
 
 pub trait Name {
     fn set_name(&mut self, n: &str);
     fn name(&self) -> String;
 }
 
-pub struct S {
-    m: String,
+pub struct L {
+    m: usize,
+}
+impl L {
+    pub fn set(&mut self, l: usize) {
+        self.m = l;
+    }
+    pub fn get(&self) -> usize {
+        self.m
+    }
 }
 
+pub struct S {
+    m: String,
+    l: L,
+}
 impl S {
     pub fn len(&self) -> usize {
         self.m.len()
@@ -54,6 +68,18 @@ pub fn display_name(s: S) {
     println!("{}", s.name());
 }
 
+/// ```compile_fail
+/// mod another_module {
+///     use super::S;
+///     pub fn display_l(s: S) {
+///         println!("{}", s.l.get());
+///     }
+/// }
+/// ```
+pub fn display_l(s: S) {
+    println!("{}", s.l.get());
+}
+
 #[cfg(test)]
 mod test {
     use super::S;
@@ -63,12 +89,30 @@ mod test {
     // get "items from traits can only be used if the trait is in scope".
     use super::Name;
 
+    // "use S" would not bring the type of its member to the scope,
+    // automatically. You need the following line to be able to do s.l.set,
+    // s.l.get or even initialise S.
+    use super::L;
+
     #[test]
     fn trait_interface_call() {
-        let mut s = S { m: String::new() };
+        let mut s = S {
+            m: String::new(),
+            l: L { m: 0 },
+        };
         let name = "Struct S";
         s.set_name(name);
         assert_eq!(s.name(), String::from(name));
         assert_eq!(s.len(), name.len());
+    }
+
+    #[test]
+    fn member_interface_call() {
+        let mut s = S {
+            m: String::new(),
+            l: L { m: 0 },
+        };
+        s.l.set(7);
+        assert_eq!(s.l.get(), 7);
     }
 }
