@@ -19,3 +19,4 @@ pub mod interior_mut;
 pub mod look_ahead;
 pub mod ref_lifetime;
 pub mod ref_spec;
+pub mod use_trait;
