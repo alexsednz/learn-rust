@@ -30,7 +30,6 @@ mod a {
         s.m += 1;
     }
 
-    #[derive(Default)]
     pub struct Y {
         m: isize,
     }
