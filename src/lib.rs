@@ -19,4 +19,5 @@ pub mod interior_mut;
 pub mod look_ahead;
 pub mod ref_lifetime;
 pub mod ref_spec;
+pub mod tuple;
 pub mod use_trait;
