@@ -17,6 +17,7 @@ pub mod enum_val;
 pub mod full_qualifier;
 pub mod interior_mut;
 pub mod look_ahead;
+pub mod private_public;
 pub mod ref_lifetime;
 pub mod ref_spec;
 pub mod tuple;
