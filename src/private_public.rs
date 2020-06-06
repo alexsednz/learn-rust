@@ -15,7 +15,7 @@
 
 //! Here we evaluate the access scope of struct types. Every rust type,
 //! including structs, make the following different relationships with the
-//! world around it: Parent, Child, Sister.
+//! world around it: Same Scope, Parent Scope, Child Scope, Sister Scope.
 
 
 #![allow(dead_code)]
@@ -49,6 +49,17 @@ struct X {
     m: isize,
 }
 
+/// It tests that we have don't have access to S (child's private struct),
+/// though the access to X is ok as expected
+/// ```compile_fail
+/// fn sub(s1: &a::S, s2: &a::S) -> isize {
+///     s1.m - s2.m
+/// }
+/// ```
+fn sub(x1: &X, x2: &X) -> isize {
+    x1.m - x2.m
+}
+
 mod b {
     use super::X;
     /// I tests that we have access to X (parent's private struct) but not
@@ -59,9 +70,9 @@ mod b {
     ///     s.m -= 1;
     /// }
     /// ```
-    fn dec(s: &mut X) {
+    fn dec(x: &mut X) {
         // "X" and its member are even accessible inside a child module
-        s.m -= 1;
+        x.m -= 1;
     }
 
     use super::a::Y;
