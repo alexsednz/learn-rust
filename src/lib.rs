@@ -21,4 +21,5 @@ pub mod private_public;
 pub mod ref_lifetime;
 pub mod ref_spec;
 pub mod tuple;
+pub mod turbo_fish;
 pub mod use_trait;
