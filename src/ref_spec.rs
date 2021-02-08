@@ -37,7 +37,7 @@ mod test {
         }
 
         fn sqr_distance(p1: &Point, p2: &Point) -> isize {
-            // In the following line of code we couldn't pas p2 directly as the
+            // In the following line of code we couldn't pass p2 directly as the
             // reference behavior in Rust is not like C++ We couldn't do
             // *p2 either as Copy is not implemented for Point
             p1.sqr_dst(p2.clone())
