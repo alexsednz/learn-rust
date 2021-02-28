@@ -24,3 +24,4 @@ pub mod ref_spec;
 pub mod tuple;
 pub mod turbo_fish;
 pub mod use_trait;
+pub mod const_generic_workaround;
