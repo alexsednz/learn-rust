@@ -15,7 +15,7 @@
 
 //! Until Rust 1.51 adds support for generic const, we can only get help from macros to avoid
 //! duplications where there is a need to implement a trait for the types such as arrays which
-//! have constant values in their construct.
+//! have constant values in their construct. Another workaround for arrays is looking at slices.
 
 pub trait Fibonacci {
     fn fib(&mut self);
@@ -62,31 +62,61 @@ impl_fibonacci!(7);
 /// ```
 pub fn fibonacci_not_implemented_for_eight_element_array() {}
 
+pub fn fibonacci(s: &mut [usize]) {
+    if s.len() > 0 {
+        s[0] = 1;
+    }
+    if s.len() > 1 {
+        s[1] = 1;
+    }
+    for i in 2..s.len() {
+        s[i] = s[i - 1] + s[i - 2];
+    }
+}
+
 #[cfg(test)]
 mod test {
-    use super::Fibonacci;
+    use super::{fibonacci, Fibonacci};
 
     #[test]
     fn one_element() {
         let mut s = [0usize; 1];
-        let fibonacci = [1usize];
         s.fib();
-        assert_eq!(s, fibonacci);
+        assert_eq!(s, [1usize]);
     }
 
     #[test]
     fn two_elements() {
         let mut s = [0usize; 2];
-        let fibonacci = [1usize, 1];
         s.fib();
-        assert_eq!(s, fibonacci);
+        assert_eq!(s, [1usize, 1]);
     }
 
     #[test]
     fn seven_elements() {
         let mut s = [0usize; 7];
-        let fibonacci = [1usize, 1, 2, 3, 5, 8, 13];
         s.fib();
-        assert_eq!(s, fibonacci);
+        assert_eq!(s, [1usize, 1, 2, 3, 5, 8, 13]);
+    }
+
+    #[test]
+    fn one_element_slice_workaround() {
+        let mut s = [0usize; 1];
+        fibonacci(&mut s);
+        assert_eq!(s, [1usize]);
+    }
+
+    #[test]
+    fn two_elements_slice_workaround() {
+        let mut s = [0usize; 2];
+        fibonacci(&mut s);
+        assert_eq!(s, [1usize, 1]);
+    }
+
+    #[test]
+    fn seven_elements_slice_workaround() {
+        let mut s = [0usize; 7];
+        fibonacci(&mut s);
+        assert_eq!(s, [1usize, 1, 2, 3, 5, 8, 13]);
     }
 }
