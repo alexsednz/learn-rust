@@ -1,0 +1,10 @@
+[package]
+name = "learn-proc-macro"
+version = "0.1.0"
+authors = ["https://github.com/aliXsed"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]

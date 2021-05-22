@@ -1,7 +1,6 @@
-[package]
-name = "learn-rust"
-version = "0.1.0"
-authors = ["AlexSedNZ <alex.sedighi@centrality.ai>"]
-edition = "2018"
+[workspace]
 
-[dependencies]
+members = [
+    "learn-general-rust",
+    "learn-proc-macro",
+]
